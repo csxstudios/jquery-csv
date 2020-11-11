@@ -47,7 +47,7 @@
 								newValue = parseValue;
 							}
 
-							if(!settings.headerKeywordsAllowed.length | settings.headerKeywordsAllowed.includes(headers[j])) {
+							if(!settings.headerKeywordsAllowed.length || settings.headerKeywordsAllowed.includes(headers[j])) {
 								tarr[headers[j]] = newValue;
 							}
 						}
@@ -62,18 +62,20 @@
 			parseHeaders: function(header, i) {
 				var headerArr = header.split(" ");
 				var matchedArr = [];
-				headerArr.forEach(function(value, index) {
-					var match = settings.headerKeywordsAllowed.some(function (keyword) {
-						return value.toUpperCase().includes(keyword)
-					});
-					
-					if (match) {
-						var convertedText = value.toUpperCase() in settings.headerConversions ? settings.headerConversions[value.toUpperCase()] : value.toUpperCase();
-						matchedArr.push(convertedText);
-					} else {
-						header += "A" + i;
-					}
-				})
+				if(settings.headerKeywordsAllowed.length) {
+					headerArr.forEach(function(value, index) {
+						var match = settings.headerKeywordsAllowed.some(function (keyword) {
+							return value.toUpperCase().includes(keyword)
+						});
+						
+						if (match) {
+							var convertedText = value.toUpperCase() in settings.headerConversions ? settings.headerConversions[value.toUpperCase()] : value.toUpperCase();
+							matchedArr.push(convertedText);
+						} else {
+							header += "A" + i;
+						}
+					})
+				}
 				
 				return matchedArr.length > 0 ? matchedArr[matchedArr.length-1] : header.split(" ").join("");
 			}
