@@ -1,18 +1,9 @@
-// Create closure.
 (function ($) {
-	// Plugin definition.
 	$.fn.jqueryCsv = function (options) {
 		// default settings:
 		var defaults = {
-			headerKeywordsAllowed: ["CITY", "TOTAL", "AGENCY", "COUNT", "COORDINATES", "DATA_FY", "TITLE", "XQ", "NAMES", "OPDIV", "RECIPIENT", "AMOUNT", "ASSISTANCE", "CFDA_NUM"],
-			headerConversions: {
-				"XQ": "COORDINATES",
-				"FY": "DATA_FY",
-				"NAMES": "RECIPIENT",
-				"AGENCY": "OPDIV",
-				"AMOUNT": "TOTAL",
-				"ASSISTANCE": "CFDA_NUM"
-			},
+			headerKeywordsAllowed: [],
+			headerConversions: {},
 			processData: function(csvText) {
 				var allTextLines = csvText.split(/\r\n|\n|\r/);
 				var headers = allTextLines[0].split(',');
@@ -56,7 +47,7 @@
 								newValue = parseValue;
 							}
 
-							if(settings.headerKeywordsAllowed.includes(headers[j])) {
+							if(!settings.headerKeywordsAllowed.length | settings.headerKeywordsAllowed.includes(headers[j])) {
 								tarr[headers[j]] = newValue;
 							}
 						}
@@ -85,16 +76,12 @@
 				})
 				
 				return matchedArr.length > 0 ? matchedArr[matchedArr.length-1] : header.split(" ").join("");
-			},
-			onImageShow: function () {},
+			}
 		};
 
 		var settings = $.extend({}, defaults, options);
 
 		return this.each(function () {
-			// Plugin code would go here...
-			// Later on in the plugin:
-
 			var elem = $(this);
 
 			const update = function (elem) {
@@ -116,5 +103,4 @@
 		});
 	};
 
-  // End of closure.
 })(jQuery);
