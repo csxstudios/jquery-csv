@@ -72,12 +72,13 @@
 							var convertedText = value.toUpperCase() in settings.headerConversions ? settings.headerConversions[value.toUpperCase()] : value.toUpperCase();
 							matchedArr.push(convertedText);
 						} else {
-							header += "A" + i;
+							header = header.split(" ").join("");
+							header += "_A" + i;
 						}
 					})
 				}
 				
-				return matchedArr.length > 0 ? matchedArr[matchedArr.length-1] : header.split(" ").join("");
+				return matchedArr.length > 0 ? matchedArr[matchedArr.length-1] : header;
 			}
 		};
 
@@ -91,15 +92,15 @@
 				var parent = elem.parent();
 				var dataArr = settings.processData(csvText);
 				var parseText = JSON.stringify(dataArr);
+				var elemId = elem.attr("id");
 
-				var output = $("#csvToJson").length ? $("#csvToJson").text(parseText) : $("<code id='csvToJson' />").text(parseText).appendTo(parent);
+				var output = $("#"+ elemId + "Output").length ? $("#"+ elemId + "Output").text(parseText) : $("<code id='" + elemId + "Output' />").text(parseText).appendTo(parent);
 			};
 
 			update(elem);
 
 			$(this).on("keyup", function () {
-			console.log("update");
-			update(elem);
+				update(elem);
 			});
 		
 		});
